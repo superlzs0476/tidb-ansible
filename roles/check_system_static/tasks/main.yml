@@ -13,11 +13,11 @@
 
 - name: Preflight check - Linux OS family and distribution version
   fail:
-    msg: "System versions lower than Red Hat Enterprise Linux / CentOS 7.3 have been deprecated. Please use CentOS 7.3 and above. See https://github.com/pingcap/docs/blob/master/op-guide/recommendation.md"
+    msg: "System versions lower than Red Hat Enterprise Linux / CentOS 7.3 have been deprecated. Please use CentOS 7.3 and above. See https://github.com/pingcap/docs/blob/master/dev/how-to/deploy/hardware-recommendations.md"
   when:
     - ansible_os_family == 'RedHat'
-    - ansible_distribution != 'Amazon'
-    - ansible_distribution_version < '7.3'
+    - ansible_distribution in ['CentOS', 'RedHat']
+    - ansible_distribution_major_version != '7'
 
 - name: Deploy epollexclusive script
   copy: src="{{ script_dir }}/check/epollexclusive" dest="{{ deploy_dir }}/epollexclusive" mode=0755
@@ -47,7 +47,7 @@
 
 - name: Preflight check - Fail when CPU frequency governor is not set to performance mode
   fail:
-    msg: "To achieve maximum performance, it is recommended to set The CPU frequency governor to performance mode, see https://github.com/pingcap/docs/blob/master/op-guide/ansible-deployment.md#step-7-configure-the-cpufreq-governor-mode-on-the-target-machine"
+    msg: "To achieve maximum performance, it is recommended to set The CPU frequency governor to performance mode, see https://github.com/pingcap/docs/blob/master/dev/how-to/deploy/orchestrated/ansible.md#step-7-configure-the-cpufreq-governor-mode-on-the-target-machine"
   when:
     - cpufreq_available_governors.stdout.find("performance") != -1
     - cpufreq_current_governor.stdout.find("performance") == -1
