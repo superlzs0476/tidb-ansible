@@ -226,7 +226,7 @@ tikv_client:
 txn_local_latches:
   # Enable local latches for transactions. Enable it when
   # there are lots of conflicts between transactions.
-  # enabled: true
+  # enabled: false
   # capacity: 2048000
 
 binlog:
@@ -237,12 +237,9 @@ binlog:
   # but still provide service.
   # ignore-error: false
 
-pessimistic-txn:
+pessimistic_txn:
   # enable pessimistic transaction.
-  # enable: false
-
-  # start pessimistic transaction by default.
-  # default: false
+  # enable: true
 
   # max retry count for a statement in a pessimistic transaction.
   # max-retry-count: 256

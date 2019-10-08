@@ -38,6 +38,13 @@
   roles:
     - check_config_dynamic
 
+- name: Pre-check for configuration
+  hosts: pd_servers[0]
+  tags:
+    - check_config
+  roles:
+    - check_config
+
 - name: deploying node_exporter
   hosts: monitored_servers
   tags:
@@ -86,7 +93,6 @@
     - grafana
   roles:
     - grafana
-    - grafana_collector
 
 - name: deploying kafka_exporter
   hosts: kafka_exporter_servers
@@ -116,14 +122,7 @@
   tags:
     - pump
   roles:
-    - { role: pump_cluster, when: enable_binlog|default(false) and binlog_version == "cluster" }
-
-- name: deploying pump kafka
-  hosts: tidb_servers
-  tags:
-    - pump
-  roles:
-    - { role: pump_kafka, when: enable_binlog|default(false) and binlog_version == "kafka" }
+    - { role: pump, when: enable_binlog|default(false) }
 
 - name: deploying TiDB cluster
   hosts: tidb_servers
@@ -159,3 +158,10 @@
   become: true
   roles:
     - { role: firewalld, when: enable_firewalld is defined and enable_firewalld }
+
+- name: deploying perf-tools
+  hosts: monitored_servers
+  tags:
+    - always
+  roles:
+    - perf_tools

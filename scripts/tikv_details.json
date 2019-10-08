@@ -58,20 +58,8 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1562921521045,
-  "links": [
-    {
-      "icon": "doc",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [],
-      "targetBlank": true,
-      "title": "Report",
-      "tooltip": "Open a pdf report for the current dashboard",
-      "type": "link",
-      "url": "http://172.16.30.37:8686/api/report/test-cluster-tikv-details?apitoken=eyJrIjoiTUc4aVM0OUpTaTdLQWJueGZVbFBwbUc0VnVMTWEweHMiLCJuIjoiZ3JhZmFuYV9hcGlrZXkiLCJpZCI6MX0="
-    }
-  ],
+  "iteration": 1564734962292,
+  "links": [],
   "panels": [
     {
       "collapsed": true,
@@ -7556,7 +7544,7 @@
               "refId": "A"
             },
             {
-              "expr": "sum(rate(tikv_raftstore_local_read_batch_requests_total_sum{instance=~\"$instance\"}[1m])) by (instance)",
+              "expr": "sum(rate(tikv_raftstore_local_read_executed_requests{instance=~\"$instance\"}[1m])) by (instance)",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{instance}}-total",
@@ -9808,6 +9796,7 @@
               "expr": "sum(rate(tikv_gc_worker_too_busy{instance=~\"$instance\"}[1m]))",
               "format": "time_series",
               "intervalFactor": 2,
+              "legendFormat": "gcworker-too-busy",
               "refId": "D"
             }
           ],
@@ -10324,7 +10313,7 @@
             "x": 0,
             "y": 350
           },
-          "id": 2108,
+          "id": 2819,
           "legend": {
             "alignAsTable": true,
             "avg": false,
@@ -10351,11 +10340,11 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(max_over_time(tikv_gcworker_autogc_status{state=\"working\"}[1m])) by (job)",
+              "expr": "sum(max_over_time(tikv_gcworker_autogc_status{instance=~\"$instance\", state=\"working\"}[1m])) by (instance)",
               "format": "time_series",
               "instant": false,
               "intervalFactor": 2,
-              "legendFormat": "{{job}}",
+              "legendFormat": "{{instance}}",
               "metric": "tikv_storage_command_total",
               "refId": "A",
               "step": 4
@@ -10399,6 +10388,291 @@
           ]
         },
         {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "decimals": 0,
+          "description": "Progress of ResolveLocks, the first phase of GC",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 12,
+            "y": 350
+          },
+          "id": 2823,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": 250,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "max(tidb_tikvclient_range_task_stats{type=~\"resolve-locks.*\"}) by (result)",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{result}}",
+              "metric": "tikv_storage_command_total",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "ResolveLocks Progress",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "none",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "decimals": 0,
+          "description": "Progress of TiKV's GC",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 0,
+            "y": 357
+          },
+          "id": 2821,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": 250,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(tikv_gcworker_autogc_processed_regions{instance=~\"$instance\", type=\"scan\"}) by (instance) / sum(tikv_raftstore_region_count{instance=~\"$instance\", type=\"region\"}) by (instance)",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "metric": "tikv_storage_command_total",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "TiKV Auto GC Progress",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": null,
+              "format": "percentunit",
+              "label": null,
+              "logBase": 1,
+              "max": "1.1",
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "${DS_TEST-CLUSTER}",
+          "decimals": 0,
+          "description": "SafePoint used for TiKV's Auto GC",
+          "fill": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 12,
+            "y": 357
+          },
+          "id": 2822,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": 250,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "max(tikv_gcworker_autogc_safe_point) by (instance) / (2^18)",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{instance}}",
+              "metric": "tikv_storage_command_total",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "TiKV Auto GC SafePoint",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": null,
+              "format": "dateTimeAsIso",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
           "cacheTimeout": null,
           "colorBackground": false,
           "colorValue": false,
@@ -10422,8 +10696,8 @@
           "gridPos": {
             "h": 7,
             "w": 6,
-            "x": 12,
-            "y": 350
+            "x": 0,
+            "y": 364
           },
           "id": 27,
           "interval": null,
@@ -10506,8 +10780,8 @@
           "gridPos": {
             "h": 7,
             "w": 6,
-            "x": 18,
-            "y": 350
+            "x": 6,
+            "y": 364
           },
           "id": 28,
           "interval": null,
@@ -14819,7 +15093,7 @@
           },
           "yaxes": [
             {
-              "format": "ms",
+              "format": "µs",
               "label": null,
               "logBase": 10,
               "max": null,
@@ -19091,7 +19365,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "tikv_jemalloc_stats{instance=~\"$instance\"}",
+              "expr": "tikv_allocator_stats{instance=~\"$instance\"}",
               "format": "time_series",
               "hide": false,
               "intervalFactor": 2,
@@ -19102,7 +19376,7 @@
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Jemalloc Stats",
+          "title": "Allocator Stats",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -19245,7 +19519,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Test-Cluster-TiKV-Details2",
+  "title": "Test-Cluster-TiKV-Details",
   "uid": "RDVQiEzZz2",
   "version": 2
 }
